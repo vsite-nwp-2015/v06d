@@ -2,27 +2,14 @@
 #include <cmath>
 #include "rc.h"
 
-const double PI=3.1415926;
-
-COLORREF GetColor(COLORREF incol){
-	COLORREF custCols[16] = {0};
-	CHOOSECOLOR cc;
-	ZeroMemory(&cc, sizeof cc);
-	cc.lStructSize = sizeof cc;
-	cc.Flags = CC_FULLOPEN|CC_RGBINIT;
-	cc.lpCustColors = custCols;
-	cc.rgbResult = incol;
-	if(ChooseColor(&cc))
-		incol = cc.rgbResult;
-	return incol;
-}
-
 int NumDialog::IDD(){
 	return IDD_NUMBER; 
 }
+
 bool NumDialog::OnInitDialog(){
 	return true;
 }
+
 bool NumDialog::OnOK(){
 	return true;
 }
