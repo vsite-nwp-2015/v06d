@@ -2,7 +2,7 @@
 #include <cmath>
 #include "rc.h"
 
-COLORREF back;
+
 
 COLORREF GetColor(HWND parent, COLORREF col)
 {
@@ -60,20 +60,32 @@ bool NumDialog::OnOK()
 void MainWindow::OnPaint(HDC hdc)
 {
 	double y, x;
+	int r =200;
+	RECT rc;
+	GetClientRect(*this, &rc);
+
+	SetMapMode(hdc, MM_ISOTROPIC);
+	SetWindowExtEx(hdc, 1000, 1000, NULL);
+	SetViewportExtEx(hdc, rc.right, rc.bottom, NULL);
 	
-	int r = 100;
+	
 	HBRUSH brush = CreateSolidBrush(back);
-	SetROP2(hdc, R2_XORPEN);
+	SelectBrush(hdc, brush);
+	SelectPen(hdc,GetStockPen(NULL_PEN ));
+	SetROP2(hdc, R2_NOTXORPEN);
 
 	for (int k = 0; k < br; k++)
 	{
-		y = (int)(-r*(sin(k*(2 * atan(1) * 4 / br)))); //atan(1)*4  = pi
-		x = (int)(-r*(cos(k*(2 * atan(1) * 4 / br))));
+		y = (int)(r*(sin(k*(2 * atan(1) * 4 / br)))); //atan(1)*4  = pi
+		x = (int)(r*(cos(k*(2 * atan(1) * 4 / br))));
 		
-		Ellipse(hdc, x - r + 400, y - r + 250, x + r + 400, y + r + 250);
+		Ellipse(hdc, x - r + 500, y - r + 500, x + r + 500, y + r + 500);
 	}
+	
 
 	DeleteObject(brush);
+
+	
 }
 
 void MainWindow::OnCommand(int id){
