@@ -5,3 +5,4 @@
 
 #define IDD_NUMBER	105
 #define IDC_EDIT1	106
+ 
