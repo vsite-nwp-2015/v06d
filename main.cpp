@@ -17,9 +17,24 @@ bool NumDialog::OnOK(){
 void MainWindow::OnPaint(HDC hdc){
 }
 
+COLORREF GetColor(HWND parent, COLORREF cur) {
+	COLORREF custCols[16] = { 0 };
+	CHOOSECOLOR cc;
+	ZeroMemory(&cc, sizeof cc);
+	cc.lStructSize = sizeof cc;
+	cc.Flags = CC_FULLOPEN | CC_RGBINIT;
+	cc.hwndOwner = parent;
+	cc.lpCustColors = custCols;
+	cc.rgbResult = cur;
+	if (ChooseColor(&cc))
+		cur = cc.rgbResult;
+	return cur;
+}
+
 void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_COLOR: 
+			GetColor(*this, boja);
 			break;
 		case ID_NUMBER: 
 			break;

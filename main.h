@@ -9,6 +9,9 @@ protected:
 };
 
 class MainWindow : public Window {
+	COLORREF boja;
+public:
+	MainWindow() : boja(RGB(0, 0, 0)) {}
 protected:
 	void OnPaint(HDC hdc);
 	void OnCommand(int id);
