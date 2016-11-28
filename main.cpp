@@ -41,12 +41,13 @@ void MainWindow::OnPaint(HDC hdc) {
 	SelectPen(hdc, GetStockObject(NULL_PEN));
 	SetViewportOrgEx(hdc, rectangle.right / 2, rectangle.bottom / 2, NULL);
 	SetROP2(hdc, R2_NOTXORPEN);
+	double pi = atan(1) * 4;
 	for (int r = 0; r != brojKrugova; r++)
 	{
-		double a = (2 * r * atan(1) * 4) / brojKrugova ;
+		double a = (2 * r * pi) / brojKrugova ;
 		double x = size * cos(a);
 		double y = size * sin(a);
-		::Ellipse(hdc, x+size, y+size, x - size, y - size);
+		::Ellipse(hdc, x - size, y - size, x + size, y + size);
 	}
 	DeleteObject(brush);
 }
