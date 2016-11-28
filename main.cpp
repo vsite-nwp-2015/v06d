@@ -49,6 +49,7 @@ void MainWindow::OnPaint(HDC hdc) {
 		double y = size * sin(a);
 		::Ellipse(hdc, x - size, y - size, x + size, y + size);
 	}
+	DeletePen(hdc);
 	DeleteObject(brush);
 }
 
