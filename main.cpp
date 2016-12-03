@@ -37,8 +37,9 @@ void MainWindow::OnPaint(HDC hdc) {
 	GetClientRect(*this, &rectangle);
 	int size = rectangle.bottom/4;
 	HBRUSH brush = CreateSolidBrush(boja);
-	SelectBrush(hdc, brush);
-	SelectPen(hdc, GetStockObject(NULL_PEN));
+	HGDIOBJ holdbrush = SelectBrush(hdc, brush);
+	HGDIOBJ holdpen =SelectPen(hdc, GetStockObject(NULL_PEN));
+
 	SetViewportOrgEx(hdc, rectangle.right / 2, rectangle.bottom / 2, NULL);
 	SetROP2(hdc, R2_NOTXORPEN);
 	double pi = atan(1) * 4;
@@ -49,8 +50,8 @@ void MainWindow::OnPaint(HDC hdc) {
 		double y = size * sin(a);
 		::Ellipse(hdc, x - size, y - size, x + size, y + size);
 	}
-	DeletePen(hdc);
-	DeleteObject(brush);
+	SelectObject(hdc, holdpen);
+	DeleteObject(SelectObject(hdc, holdbrush));
 }
 
 COLORREF GetColor(HWND parent, COLORREF cur) {
