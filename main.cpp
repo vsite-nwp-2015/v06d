@@ -52,9 +52,10 @@ void MainWindow::OnPaint(HDC hdc){
 	SelectPen(hdc, GetStockObject(NULL_PEN));
 	SetROP2(hdc, R2_NOTXORPEN);
 	SetViewportOrgEx(hdc, mainRect.right / 2, mainRect.bottom / 2, NULL);
-	for (float n= 0;  n < 360  ;  n+= 360./mojBroj) {
+	for (float n= 0, step = 360. / mojBroj;  n < 360  ;  n+= step) {
 		int circleMiddleX = size*cos(n*pi/180);
 		int circleMiddleY = size*sin(n*pi / 180);
+		if(step<=360.-n)
 		::Ellipse(hdc, circleMiddleX - size, circleMiddleY- size, circleMiddleX+ size, circleMiddleY+ size);
 	}
 	SelectBrush(hdc, staraCetka);
