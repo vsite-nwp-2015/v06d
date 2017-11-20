@@ -60,13 +60,12 @@ void MainWindow::OnPaint(HDC hdc){
 	SelectPen(hdc, GetStockObject(NULL_PEN));
 	SetROP2(hdc, R2_NOTXORPEN);
 	SetViewportOrgEx(hdc, mainRect.right / 2, mainRect.bottom / 2, NULL);
-	for (float n= 0, step = 360. / mojBroj;  n < 360  ;  n+= step) {
+	for (double n= 0, step = 360. / mojBroj-0.00000000000001;  n < 360  ;  n+= step) {
 		int circleMiddleX = size*cos(n*pi/180);
 		int circleMiddleY = size*sin(n*pi / 180);
-		if(step<=360.-n&&mojBroj%2==1)
+		if(step<=360.-n)
 			::Ellipse(hdc, circleMiddleX - size, circleMiddleY- size, circleMiddleX+ size, circleMiddleY+ size);
-		else if(mojBroj % 2 == 0)
-			::Ellipse(hdc, circleMiddleX - size, circleMiddleY - size, circleMiddleX + size, circleMiddleY + size);
+
 	}
 	SelectBrush(hdc, staraCetka);
 	DeleteObject(cetka);
