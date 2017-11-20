@@ -7,9 +7,11 @@ int howMany(HWND handle,int br)
 {	
 	NumDialog numDial;
 	numDial.broj = br;
-	if (numDial.DoModal(NULL, handle) == IDOK)
+	try{
+	if (numDial.DoModal(NULL, handle) == IDOK) 
 		br = numDial.broj;
-	
+	}
+	catch(...){br = 6;}
 	return br;
 };
 
@@ -37,9 +39,15 @@ bool NumDialog::OnInitDialog(){
 	return true;
 }
 
-bool NumDialog::OnOK(){
-NumDialog:broj = GetInt(IDC_EDIT1);
-	return true;
+bool NumDialog::OnOK(){try{
+broj = GetInt(IDC_EDIT1);
+}
+catch (...) {
+broj = 6;
+	}
+if (broj < 0)
+	broj *= -1;
+return true;
 }
 
 void MainWindow::OnPaint(HDC hdc){
@@ -55,8 +63,10 @@ void MainWindow::OnPaint(HDC hdc){
 	for (float n= 0, step = 360. / mojBroj;  n < 360  ;  n+= step) {
 		int circleMiddleX = size*cos(n*pi/180);
 		int circleMiddleY = size*sin(n*pi / 180);
-		if(step<=360.-n)
-		::Ellipse(hdc, circleMiddleX - size, circleMiddleY- size, circleMiddleX+ size, circleMiddleY+ size);
+		if(step<=360.-n&&mojBroj%2==1)
+			::Ellipse(hdc, circleMiddleX - size, circleMiddleY- size, circleMiddleX+ size, circleMiddleY+ size);
+		else if(mojBroj % 2 == 0)
+			::Ellipse(hdc, circleMiddleX - size, circleMiddleY - size, circleMiddleX + size, circleMiddleY + size);
 	}
 	SelectBrush(hdc, staraCetka);
 	DeleteObject(cetka);
