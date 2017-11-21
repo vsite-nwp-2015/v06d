@@ -24,17 +24,17 @@ double toRadians(double angle)
 
 HRGN createRegion(int x0, int y0, int r, int noOfDividingPoints)
 {
-	/*HRGN hrgn=NULL;
+	HRGN hrgn= CreateEllipticRgn(0, 0, 0, 0);;
 	HRGN hrgn2;
-	for (float n = 0;n < 360;n += 360 / noOfDividingPoints)
+	for (float n = 0;n < 360;n += 360. / noOfDividingPoints)
 	{
 		int x = r*cos(n*M_PI / 180);
 		int y = r*sin(n*M_PI / 180);
 		hrgn2 = CreateEllipticRgn(x - r, y - r, x + r, y + r);
 		CombineRgn(hrgn, hrgn, hrgn2, RGN_XOR);
-	}*/
+	}
 
-	std::list<int> x;
+	/*std::list<int> x;
 	std::list<int> y;
 	int pointx = 0;
 	int pointy = 0;
@@ -60,7 +60,7 @@ HRGN createRegion(int x0, int y0, int r, int noOfDividingPoints)
 		pointy = y.back(); y.pop_back();
 		hrgn2 = CreateEllipticRgn(pointx - r, pointy - r, pointx + r, pointy + r);
 		CombineRgn(hrgn, hrgn, hrgn2, RGN_XOR);
-	}
+	}*/
 	return hrgn;
 }
 
@@ -81,14 +81,15 @@ COLORREF boja(HWND hwnd, COLORREF myCol)
 
 void MainWindow::OnPaint(HDC hdc){
 	RECT rc; GetClientRect(*this, &rc);
+	int ypix = 1000, xpix = 1000;
 	SetMapMode(hdc, MM_ANISOTROPIC);
 	SetViewportExtEx(hdc, rc.right, rc.bottom, NULL);
-	SetWindowExtEx(hdc, 1000, 1000, NULL);
-	//SetViewportOrgEx(hdc, rc.right / 2, rc.bottom / 2, NULL);
+	SetViewportOrgEx(hdc, rc.right / 2, rc.bottom / 2, NULL);
+	SetWindowExtEx(hdc, ypix, xpix, NULL);
 
 	HBRUSH hbrush = CreateSolidBrush(myCol);
 	
-	HRGN hrgn = createRegion(500, 500, 250, numOfPoints);
+	HRGN hrgn = createRegion(0, 0, xpix/4, numOfPoints);
 	FillRgn(hdc, hrgn, hbrush);
 	FrameRgn(hdc, hrgn, hbrush, 1, 1);
 }
