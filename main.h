@@ -2,13 +2,18 @@
 #include "nwpdlg.h"
 
 class NumDialog : public Dialog {
+public:
+	int broj=1;
 protected:
 	int IDD();
 	bool OnInitDialog();
-	bool OnOK();
+	bool OnOK();	
 };
 
 class MainWindow : public Window {
+public:
+	int mojBroj = 3;
+	COLORREF mojaBoja = RGB(0,150,150);
 protected:
 	void OnPaint(HDC hdc);
 	void OnCommand(int id);
