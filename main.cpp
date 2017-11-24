@@ -9,6 +9,7 @@ int NumDialog::IDD(){
 }
 
 bool NumDialog::OnInitDialog(){
+	SetInt(IDC_EDIT1, numberOfPoints);
 	return true;
 }
 
@@ -34,34 +35,19 @@ HRGN createRegion(int x0, int y0, int r, int noOfDividingPoints)
 		CombineRgn(hrgn, hrgn, hrgn2, RGN_XOR);
 	}
 
-	/*std::list<int> x;
-	std::list<int> y;
-	int pointx = 0;
-	int pointy = 0;
 	
-	double angle = 0;
-
-	for (int i = 0;i < noOfDividingPoints;++i)
-	{
-		angle = i*(360 / noOfDividingPoints);
-		x.push_back((int)x0 + r*cos(toRadians(angle)));
-		y.push_back((int)y0 + r*sin(toRadians(angle)));
-	}
-	if (x.size() != 0 && y.size())
-	{
-		pointx = x.back(); x.pop_back();
-		pointy = y.back(); y.pop_back();
-	}
-	HRGN hrgn = CreateEllipticRgn(pointx-r, pointy-r, pointx+r, pointy+r);
-	HRGN hrgn2;
-	while (!x.empty() && !y.empty())
-	{
-		pointx = x.back(); x.pop_back();
-		pointy = y.back(); y.pop_back();
-		hrgn2 = CreateEllipticRgn(pointx - r, pointy - r, pointx + r, pointy + r);
-		CombineRgn(hrgn, hrgn, hrgn2, RGN_XOR);
-	}*/
 	return hrgn;
+}
+
+void createElipses(HDC hdc, int r, int noOfDividingPoints)
+{
+	SetROP2(hdc, R2_NOTXORPEN);
+	for (float n = 0;n < 360;n += 360. / noOfDividingPoints)
+	{
+		int x = r*cos(n*M_PI / 180);
+		int y = r*sin(n*M_PI / 180);
+		::Ellipse(hdc, x - r, y - r, x + r, y + r);
+	}
 }
 
 COLORREF boja(HWND hwnd, COLORREF myCol)
@@ -88,14 +74,17 @@ void MainWindow::OnPaint(HDC hdc){
 	SetWindowExtEx(hdc, ypix, xpix, NULL);
 
 	HBRUSH hbrush = CreateSolidBrush(myCol);
-	
-	HRGN hrgn = createRegion(0, 0, xpix/4, numOfPoints);
-	FillRgn(hdc, hrgn, hbrush);
-	FrameRgn(hdc, hrgn, hbrush, 1, 1);
+	//NOTE TO SELF: crtanje brze od regija
+	//HRGN hrgn = createRegion(0, 0, xpix/4, numOfPoints);
+	//FillRgn(hdc, hrgn, hbrush);
+	SelectBrush(hdc, hbrush);
+	createElipses(hdc, xpix / 4, numOfPoints);
+	DeleteObject(hbrush);
 }
 
 void MainWindow::OnCommand(int id){
 	NumDialog dialog;
+	dialog.numberOfPoints = numOfPoints;
 	switch(id){
 		case ID_COLOR:
 			myCol = boja(*this, myCol);
