@@ -2,8 +2,10 @@
 #include "nwpdlg.h"
 
 class NumDialog : public Dialog {
-	int num=5;
-public: int getNum() { return num; };
+	int num;
+public: 
+	NumDialog (int n) : num(n) {}
+	int getNum() { return num; };
 protected:
 	int IDD();
 	bool OnInitDialog();
@@ -12,7 +14,7 @@ protected:
 
 class MainWindow : public Window {
 	COLORREF myCol = RGB(0, 0, 0);
-	int brojKrugova;
+	int brojKrugova = 5;
 protected:
 	void OnPaint(HDC hdc);
 	void OnCommand(int id);

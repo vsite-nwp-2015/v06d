@@ -30,12 +30,14 @@ void MainWindow::NewColor() {
 	cc.Flags = CC_FULLOPEN | CC_RGBINIT;
 	cc.lpCustColors = custCols;
 	cc.rgbResult = myCol;
-	if (ChooseColor(&cc) == IDOK)
+	if (ChooseColor(&cc) == IDOK) {
 		myCol = cc.rgbResult;
-	InvalidateRect(*this, NULL, true);
+		InvalidateRect(*this, NULL, true);
+	}
 }
 void MainWindow::NewNumber() {
-	NumDialog nd;
+	NumDialog nd(brojKrugova);
+	
 	if (nd.DoModal(0, *this) == IDOK) {
 		brojKrugova = nd.getNum();
 		InvalidateRect(*this, NULL, true);
@@ -55,7 +57,7 @@ void MainWindow::OnPaint(HDC hdc){
 		double y = rect.bottom/2 + r * sin(a);
 		Ellipse(hdc, x + r, y + r, x - r, y - r);
 	}
-	DeleteObject(brush);
+	DeleteObject(SelectObject(hdc, holdBrush));
 }
 
 void MainWindow::OnCommand(int id){
