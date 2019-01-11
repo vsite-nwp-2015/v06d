@@ -25,6 +25,7 @@ bool NumDialog::OnOK() {
 
 void MainWindow::OnPaint(HDC hdc) {
 	RECT rc;
+	const double PI = 3.141592653589793238463;
 	GetClientRect(*this, &rc);
 	int r = rc.bottom / 4;
 	HBRUSH brush = CreateSolidBrush(myCol);
@@ -33,7 +34,7 @@ void MainWindow::OnPaint(HDC hdc) {
 	SetROP2(hdc, R2_NOTXORPEN);
 	
 	for (int i = 0; i < brojKrugova; ++i) {
-		double a = 2 * 3.14*i / brojKrugova;
+		double a = 2 * PI*i / brojKrugova;
 		double b = rc.right / 2 + r * cos(a);
 		double c = rc.bottom / 2 + r * sin(a);
 		Ellipse(hdc, b + r, c + r, b - r, c - r);
@@ -49,6 +50,7 @@ void MainWindow::OnCommand(int id) {
 		ZeroMemory(&cc, sizeof cc);
 		cc.lStructSize = sizeof cc;
 		cc.Flags = CC_FULLOPEN | CC_RGBINIT;
+		cc.hwndOwner = *this; 
 		cc.lpCustColors = custCols;
 		cc.rgbResult = myCol;
 		if (ChooseColor(&cc) == IDOK) {
@@ -57,7 +59,7 @@ void MainWindow::OnCommand(int id) {
 		}
 	}
 		break;
-	case ID_NUMBER: {
+	case ID_NUMBER: { 
 		NumDialog nd(brojKrugova);
 
 		if (nd.DoModal(0, *this) == IDOK) {
