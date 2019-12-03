@@ -4,7 +4,6 @@
 #include <time.h>
 #include <vector>
 #include "Selector.hpp"
-#include "DrawElipse.hpp"
 
 NumDialog::NumDialog(uint32_t diagNumber)
 	: mCircleCount(std::move(diagNumber)){}
@@ -47,13 +46,15 @@ MainWindow::MainWindow()
 		static_cast<BYTE>(std::rand() % 255)
 	  , static_cast<BYTE>(std::rand() % 255)
 	  , static_cast<BYTE>(std::rand() % 255)))
-	, mCircleNumber(std::rand()% 255)
+	, mCircleNumber(std::rand() % 255)
+	, mDrawable(std::make_unique<Elipse>())
 {
 }
 
 MainWindow::MainWindow(COLORREF defaultColor, uint32_t circleNumber)
 	: mColor(std::move(defaultColor))
 	, mCircleNumber(std::move(circleNumber))
+	, mDrawable(std::make_unique<Elipse>())
 {
 }
 
@@ -62,12 +63,12 @@ void MainWindow::OnPaint(HDC hdc)
 	RECT rect;
 	GetClientRect(*this, &rect);
 	const uint16_t radius = rect.bottom / 4;
-
 	HBRUSH hBrush = ::CreateSolidBrush(mColor);
 	Selector hnd(hdc, hBrush);
 	for(uint32_t i = 0; i != mCircleNumber; ++i)
 	{
-		DrawEclipse cfe(i, mCircleNumber, rect, radius, hdc);
+		mDrawable->GenerateDots(i, mCircleNumber, rect, radius);
+		mDrawable->Draw(hdc);
 	}
 
 }

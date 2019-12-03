@@ -2,7 +2,7 @@
 #include "nwpdlg.h"
 #include "wingdi.h"
 #include <memory>
-#include "DrawElipse.hpp"
+#include "Drawable.hpp"
 
 class NumDialog : public Dialog
 {
@@ -32,5 +32,5 @@ protected:
 private:
 	COLORREF mColor;
 	uint16_t mCircleNumber;
-	std::shared_ptr<Log> mLogFile;
+	std::unique_ptr<Elipse> mDrawable;
 };
