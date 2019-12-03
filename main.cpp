@@ -3,8 +3,8 @@
 #include <cmath>
 #include <time.h>
 #include <vector>
-#include "DrawElipse.hpp"
 #include "Selector.hpp"
+#include "DrawElipse.hpp"
 
 NumDialog::NumDialog(uint32_t diagNumber)
 	: mCircleCount(std::move(diagNumber)){}
@@ -48,7 +48,6 @@ MainWindow::MainWindow()
 	  , static_cast<BYTE>(std::rand() % 255)
 	  , static_cast<BYTE>(std::rand() % 255)))
 	, mCircleNumber(std::rand()% 255)
-	, mLogFile(std::make_shared<Log>(mCircleNumber))
 {
 }
 
@@ -116,10 +115,8 @@ void MainWindow::OnNumber()
 	NumDialog numberDialog { mCircleNumber };
 	if (numberDialog.DoModal(0, *this))
 	{
-		mLogFile->ToFile(std::string("Before change"));
 		mCircleNumber = numberDialog.GetCount();
 		InvalidateRect(*this, nullptr, true);
-		mLogFile->ToFile(std::string("AfterChange"));
 	}
 }
 

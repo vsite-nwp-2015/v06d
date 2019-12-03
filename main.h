@@ -1,6 +1,8 @@
 #include "nwpwin.h"
 #include "nwpdlg.h"
 #include "wingdi.h"
+#include <memory>
+#include "DrawElipse.hpp"
 
 class NumDialog : public Dialog
 {

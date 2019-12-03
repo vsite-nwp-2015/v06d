@@ -26,31 +26,3 @@ public:
 private:
 	double left, top, right, bottom;
 };
-
-/**
- * Used ONLY FOR DEBUG.
- */
-struct Log
-{
-public:
-	explicit Log(uint16_t numberToRef) : refNum(numberToRef), fs("Log.txt")
-	{
-	}
-
-	~Log()
-	{
-		if (fs.is_open())
-		{
-			fs.close();
-		}
-	}
-
-	void ToFile(std::string& str)
-	{
-		fs << str << refNum << std::endl;
-	}
-
-private:
-	const uint16_t& refNum;
-	std::fstream fs;
-};
