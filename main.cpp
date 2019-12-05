@@ -7,26 +7,78 @@ int NumDialog::IDD(){
 }
 
 bool NumDialog::OnInitDialog(){
+	SetInt(IDC_EDIT1, br);
 	return true;
+}
+int nKrugova(HWND parent, int brKrugova) {
+	NumDialog nm;
+	nm.br = brKrugova;
+	if (nm.DoModal(NULL, parent) == IDOK)
+		brKrugova = nm.br;
+	return brKrugova;
+}
+COLORREF GColor(HWND parent, COLORREF cursor){
+	COLORREF cc[16] = { 0 };
+	CHOOSECOLOR color;
+	ZeroMemory(&cc, sizeof color);
+	color.lStructSize = sizeof color;
+	color.Flags = CC_FULLOPEN | CC_RGBINIT;
+	color.hwndOwner = parent;
+	color.lpCustColors = cc;
+	color.rgbResult = cursor;
+	if (ChooseColor(&color))
+		cursor = color.rgbResult;
+	return cursor;
 }
 
-bool NumDialog::OnOK(){
-	return true;
+bool NumDialog::OnOK() {
+	try {
+		NumDialog::br = GetInt(IDC_EDIT1);
+		return true;
+	}
+	catch (XCtrl)
+	{
+		return false;
+	}
 }
+	
+
 
 void MainWindow::OnPaint(HDC hdc){
+	RECT pravok;
+	HBRUSH brush = CreateSolidBrush(boja);
+	HGDIOBJ holder = SelectObject(hdc, brush);
+	GetClientRect(*this, &pravok);
+	int donji = pravok.bottom / 4;
+	SelectObject(hdc, GetStockObject(NULL_PEN));
+	SetROP2(hdc, R2_NOTXORPEN);
+	for (int i = 0; i < brKrugova; ++i) {
+		float z = 2 * 3.14159 * i / brKrugova;
+		int zb = pravok.right / 2 + donji * cos(z);
+		int zc = pravok.bottom / 2 + donji * sin(z);
+		Ellipse(hdc, zb - donji, zc - donji, zb + donji, zc + donji);
+
+	}
+	
+	DeleteObject(SelectObject(hdc, holder));
 }
 
 void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_COLOR: 
+			boja = GColor(*this, boja);
+			InvalidateRect(*this, NULL, true);
 			break;
 		case ID_NUMBER: 
+			brKrugova = nKrugova(*this, brKrugova);
+			InvalidateRect(*this, NULL, true);
 			break;
 		case ID_EXIT: 
 			DestroyWindow(*this); 
 			break;
+
 	}
+	InvalidateRect(*this, NULL, TRUE);
 }
 
 void MainWindow::OnDestroy(){
