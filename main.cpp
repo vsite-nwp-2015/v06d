@@ -1,3 +1,5 @@
+
+#define _USE_MATH_DEFINES
 #include "main.h"
 #include <cmath>
 #include "rc.h"
@@ -33,7 +35,7 @@ COLORREF GColor(HWND parent, COLORREF cursor){
 
 bool NumDialog::OnOK() {
 	try {
-		NumDialog::br = GetInt(IDC_EDIT1);
+		br = GetInt(IDC_EDIT1);
 		return true;
 	}
 	catch (XCtrl)
@@ -53,7 +55,7 @@ void MainWindow::OnPaint(HDC hdc){
 	SelectObject(hdc, GetStockObject(NULL_PEN));
 	SetROP2(hdc, R2_NOTXORPEN);
 	for (int i = 0; i < brKrugova; ++i) {
-		float z = 2 * 3.14159 * i / brKrugova;
+		double z = 2 * M_PI * i / brKrugova;
 		int zb = pravok.right / 2 + donji * cos(z);
 		int zc = pravok.bottom / 2 + donji * sin(z);
 		Ellipse(hdc, zb - donji, zc - donji, zb + donji, zc + donji);
