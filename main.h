@@ -7,7 +7,7 @@
 class NumDialog : public Dialog
 {
 public:
-	NumDialog(uint32_t diagNumber);
+	NumDialog(const uint32_t& diagNumber);
 	const uint32_t& GetCount() const;
 
 protected:
@@ -22,7 +22,6 @@ private:
 class MainWindow : public Window {
 public:
 	MainWindow();
-	MainWindow(COLORREF defaultColor, uint32_t circleNumber);
 protected:
 	void OnPaint(HDC hdc);
 	void OnCommand(int id);

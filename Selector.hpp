@@ -1,14 +1,15 @@
 #pragma once
 #include <Windows.h>
 
-class Selector
+class DelSelObj
 {
 public:
-	Selector(HDC hdc, HGDIOBJ hObj) : mHdc(hdc), mHoldBursh(::SelectObject(hdc, hObj))
+	DelSelObj(HDC hdc, HGDIOBJ hObj) : mHdc(hdc), mHoldBursh(::SelectObject(hdc, hObj))
 	{
+		SelectPen(hdc, GetStockObject(NULL_PEN));
 		SetROP2(hdc, R2_NOTXORPEN);
 	}
-	~Selector() {
+	~DelSelObj() {
 		DeleteObject(SelectObject(mHdc, mHoldBursh));
 	}
 private:

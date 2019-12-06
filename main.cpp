@@ -5,8 +5,10 @@
 #include <vector>
 #include "Selector.hpp"
 
-NumDialog::NumDialog(uint32_t diagNumber)
-	: mCircleCount(std::move(diagNumber)){}
+NumDialog::NumDialog(const uint32_t& diagNumber)
+	: mCircleCount(diagNumber)
+{
+}
 
 int NumDialog::IDD(){
 	return IDD_NUMBER; 
@@ -14,7 +16,6 @@ int NumDialog::IDD(){
 
 bool NumDialog::OnInitDialog(){
 	SetInt(IDC_EDIT1, mCircleCount);
-	//TODO: how to check is dialog created successfully?
 	return true;
 }
 const uint32_t& NumDialog::GetCount() const
@@ -51,26 +52,18 @@ MainWindow::MainWindow()
 {
 }
 
-MainWindow::MainWindow(COLORREF defaultColor, uint32_t circleNumber)
-	: mColor(std::move(defaultColor))
-	, mCircleNumber(std::move(circleNumber))
-	, mDrawable(std::make_unique<Elipse>())
-{
-}
-
 void MainWindow::OnPaint(HDC hdc)
 {
 	RECT rect;
 	GetClientRect(*this, &rect);
 	const uint16_t radius = rect.bottom / 4;
 	HBRUSH hBrush = ::CreateSolidBrush(mColor);
-	Selector hnd(hdc, hBrush);
+	DelSelObj hnd(hdc, hBrush);
 	for(uint32_t i = 0; i != mCircleNumber; ++i)
 	{
 		mDrawable->GenerateDots(i, mCircleNumber, rect, radius);
 		mDrawable->Draw(hdc);
 	}
-
 }
 
 void MainWindow::OnCommand(int id){
@@ -106,7 +99,7 @@ void MainWindow::OnColor()
 
 	if (ChooseColor(&chooseColor))
 	{
-		mColor = std::move(chooseColor.rgbResult);
+		mColor = chooseColor.rgbResult;
 		InvalidateRect(*this, nullptr, true);
 	}
 }
