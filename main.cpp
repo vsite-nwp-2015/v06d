@@ -1,3 +1,4 @@
+#define _USE_MATH_DEFINES
 #include "main.h"
 #include <cmath>
 #include "rc.h"
@@ -30,6 +31,7 @@ void MainWindow::NewColor() {
 	cc.lStructSize = sizeof cc;
 	cc.Flags = CC_FULLOPEN | CC_RGBINIT;
 	cc.lpCustColors = custCols;
+	cc.hwndOwner = *this;
 	cc.rgbResult = selColor;
 	if (ChooseColor(&cc) == IDOK) {
 		selColor = cc.rgbResult;
@@ -53,8 +55,9 @@ void MainWindow::OnPaint(HDC hdc){
 	HGDIOBJ holdBrush = SelectObject(hdc, brush);
 	SelectPen(hdc, GetStockObject(NULL_PEN));
 	SetROP2(hdc, R2_NOTXORPEN);
+	double fact = 2 * M_PI / numCircle;
 	for (int i = 0; i < numCircle; ++i) {
-		double a = 2 * 3.14 * i / numCircle;
+		double a = fact * i;
 		double x = rect.right / 2 + r * cos(a);
 		double y = rect.bottom / 2 + r * sin(a);
 		Ellipse(hdc, x + r, y + r, x - r, y - r);
