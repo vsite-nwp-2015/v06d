@@ -1,8 +1,8 @@
+#define _USE_MATH_DEFINES
 #include "main.h"
 #include <cmath>
 #include "rc.h"
 
-#define M_PI   3.14159265358979323846264338327950288
 class myPen {
 	HDC hdc;
 	HPEN pen;
@@ -54,14 +54,13 @@ void MainWindow::OnPaint(HDC hdc){
 	RECT rect;
 	GetClientRect(*this, &rect);
 	myPen pen(hdc, RGB(0, 0, 0), PS_NULL, 1);
-	SetBkMode(hdc, OPAQUE);
 	myBrush brush(hdc, myCol);
 	SetROP2(hdc, R2_NOTXORPEN);
 	int r = rect.bottom / 4;
 	double c = 2 * M_PI / numCircles;
 	for (int i = 0; i < numCircles; i++) {
 		double x_add = 2*r + cos(c*i) * r;
-		double y_add = rect.bottom / 2 + sin(c*i) * r;
+		double y_add = 2*r + sin(c*i) * r;
 		Ellipse(hdc, x_add - r, y_add - r, x_add + r, y_add + r);
 	}
 }
@@ -81,14 +80,6 @@ void MainWindow::OnCommand(int id){
 				myCol = cc.rgbResult;
 				InvalidateRect(*this,0,true);
 			}
-			/*Ne vidim nacin da pošaljem rezultat od ovdje do OnPainta
-				-globaljuse ne dolaze u obzir
-				-nemam hdc da pozovem myBrush
-				-koliko znam ne smijemo mijenjati pozive funkcija OnCommand i OnPaint niti dodavati nove funkcije klasi mainwindow
-				-znam da jos uvijek ne radi krugove kak treba, ali do toga cu doci nakon sto ovo porjesavam sa dijalozima
-				-razmisljao sam i staviti 2 klase za getanje boje i broja ali ni to ne ide jer ih ne mogu proslijediti jer globaljuse
-				-bih li smio izmjeniti main.h tj klasu mainwindow kako bi si proslijedio boje?
-			*/
 
 			break;
 		case ID_NUMBER: 
