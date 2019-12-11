@@ -12,10 +12,12 @@ public:
 
 class MainWindow : public Window {
 protected:
-	COLORREF myCol=RGB(0,0,255);
+	COLORREF myCol=RGB(0,0,0);
 	int numCircles=5;
 	void OnPaint(HDC hdc);
 	void OnCommand(int id);
 	void OnDestroy();
 	void OnKeyDown(int key);
+	int colorscroll=0;
+	void colorWheel();
 };

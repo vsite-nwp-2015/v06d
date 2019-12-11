@@ -49,6 +49,39 @@ bool NumDialog::OnOK(){
 	}
 	return true;
 }
+void MainWindow::colorWheel() {
+	int h = 255;
+	int l = 0;
+	switch (abs(colorscroll)%8)
+	{
+	case 0:
+		myCol=RGB(l, l, l);
+		break;
+	case 1:
+		myCol = RGB(l, l, h);
+		break;
+	case 2:
+		myCol = RGB(l, h, l);
+		break;
+	case 3:
+		myCol = RGB(l, h, h);
+		break;
+	case 4:
+		myCol = RGB(h, l, l);
+		break;
+	case 5:
+		myCol = RGB(h, l, h);
+		break;
+	case 6:
+		myCol = RGB(h, h, l);
+		break;
+	case 7:
+		myCol = RGB(h, h, h);
+		break;
+	default:
+		break;
+	}
+}
 
 void MainWindow::OnPaint(HDC hdc){
 	RECT rect;
@@ -72,6 +105,16 @@ void MainWindow::OnKeyDown(int key) {
 			break;
 		case VK_RIGHT:
 			numCircles++;
+			InvalidateRect(*this, 0, true);
+			break;
+		case VK_UP:
+			colorscroll++;
+			colorWheel();
+			InvalidateRect(* this, 0, true);
+			break;
+		case VK_DOWN:
+			colorscroll--;
+			colorWheel();
 			InvalidateRect(*this, 0, true);
 			break;
 	}
