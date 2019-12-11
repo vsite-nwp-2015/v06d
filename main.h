@@ -19,5 +19,6 @@ protected:
 	void OnDestroy();
 	void OnKeyDown(int key);
 	int colorscroll=0;
+	int shapescroll = 0;
 	void colorWheel();
 };

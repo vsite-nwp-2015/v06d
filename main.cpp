@@ -91,33 +91,50 @@ void MainWindow::OnPaint(HDC hdc){
 	SetROP2(hdc, R2_NOTXORPEN);
 	int r = rect.bottom / 4;
 	double c = 2 * M_PI / numCircles;
+
 	for (int i = 0; i < numCircles; i++) {
 		double x_add = 2*r + cos(c*i) * r;
 		double y_add = 2*r + sin(c*i) * r;
-		Ellipse(hdc, x_add - r, y_add - r, x_add + r, y_add + r);
+		switch (shapescroll) {
+		case 0:
+			Ellipse(hdc, x_add - r, y_add - r, x_add + r, y_add + r);
+			break;
+		case 1:
+			Rectangle(hdc, x_add - r, y_add - r, x_add + r, y_add + r);
+			break;
+		case 2:
+			RoundRect(hdc, x_add - r, y_add - r, x_add + r, y_add + r, 20, 20);
+			break;
+		}
 	}
 }
 void MainWindow::OnKeyDown(int key) {
 	switch (key) {
 		case VK_LEFT:
 			numCircles--;
-			InvalidateRect(*this, 0, true);
 			break;
 		case VK_RIGHT:
 			numCircles++;
-			InvalidateRect(*this, 0, true);
 			break;
 		case VK_UP:
 			colorscroll++;
 			colorWheel();
-			InvalidateRect(* this, 0, true);
 			break;
 		case VK_DOWN:
 			colorscroll--;
 			colorWheel();
-			InvalidateRect(*this, 0, true);
+			break;
+		case 0x41:
+			shapescroll = 0;
+			break;
+		case 0x53:
+			shapescroll = 1;
+			break;
+		case 0x44:
+			shapescroll = 2;
 			break;
 	}
+	InvalidateRect(*this, 0, true);
 }
 void MainWindow::OnCommand(int id){
 	COLORREF custCols[16] = { 0 };
