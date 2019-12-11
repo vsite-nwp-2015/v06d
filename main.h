@@ -17,4 +17,5 @@ protected:
 	void OnPaint(HDC hdc);
 	void OnCommand(int id);
 	void OnDestroy();
+	void OnKeyDown(int key);
 };

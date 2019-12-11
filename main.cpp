@@ -64,6 +64,18 @@ void MainWindow::OnPaint(HDC hdc){
 		Ellipse(hdc, x_add - r, y_add - r, x_add + r, y_add + r);
 	}
 }
+void MainWindow::OnKeyDown(int key) {
+	switch (key) {
+		case VK_LEFT:
+			numCircles--;
+			InvalidateRect(*this, 0, true);
+			break;
+		case VK_RIGHT:
+			numCircles++;
+			InvalidateRect(*this, 0, true);
+			break;
+	}
+}
 void MainWindow::OnCommand(int id){
 	COLORREF custCols[16] = { 0 };
 	CHOOSECOLOR cc;
