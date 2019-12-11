@@ -12,7 +12,7 @@ public:
 
 class MainWindow : public Window {
 protected:
-	COLORREF myCol;
+	COLORREF myCol=RGB(0,0,255);
 	int numCircles=5;
 	void OnPaint(HDC hdc);
 	void OnCommand(int id);
