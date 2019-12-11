@@ -58,22 +58,22 @@ void MainWindow::colorWheel() {
 		myCol=RGB(l, l, l);
 		break;
 	case 1:
-		myCol = RGB(l, l, h);
+		myCol = RGB(0.60*h, l,0.60 *h);
 		break;
 	case 2:
-		myCol = RGB(l, h, l);
+		myCol = RGB(l, l, h);
 		break;
 	case 3:
-		myCol = RGB(l, h, h);
+		myCol = RGB(l, 0.8*h, l);
 		break;
 	case 4:
-		myCol = RGB(h, l, l);
+		myCol = RGB(h, h, l);
 		break;
 	case 5:
-		myCol = RGB(h, l, h);
+		myCol = RGB(h, h/2,l);
 		break;
 	case 6:
-		myCol = RGB(h, h, l);
+		myCol = RGB(h, l, l);
 		break;
 	case 7:
 		myCol = RGB(h, h, h);
