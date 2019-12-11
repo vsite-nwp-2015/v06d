@@ -124,13 +124,13 @@ void MainWindow::OnKeyDown(int key) {
 			colorscroll--;
 			colorWheel();
 			break;
-		case 0x41:
+		case IDL_A:
 			shapescroll = 0;
 			break;
-		case 0x53:
+		case IDL_S:
 			shapescroll = 1;
 			break;
-		case 0x44:
+		case IDL_D:
 			shapescroll = 2;
 			break;
 	}
