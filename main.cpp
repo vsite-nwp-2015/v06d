@@ -56,7 +56,7 @@ void MainWindow::OnPaint(HDC hdc){
 	HGDIOBJ holdBrush = SelectObject(hdc, hbrush);
 	SelectPen(hdc, GetStockObject(NULL_PEN));
 	SetROP2(hdc, R2_NOTXORPEN);
-	double f = 2 * 3.14 / numCircle;
+	double f = 2 * M_PI / numCircle;
 	for (int i = 0; i < numCircle; ++i) {
 		double m = f * i;
 		double a = rect.right / 2 + r * cos(m);
