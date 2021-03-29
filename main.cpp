@@ -2,22 +2,20 @@
 #include <cmath>
 #include "rc.h"
 
-int NumDialog::IDD(){
-	return IDD_NUMBER; 
+int number_dialog::idd() const {
+	return IDD_NUMBER;
 }
-
-bool NumDialog::OnInitDialog(){
+bool number_dialog::on_init_dialog() {
+	return true;
+}
+bool number_dialog::on_ok() {
 	return true;
 }
 
-bool NumDialog::OnOK(){
-	return true;
+void main_window::on_paint(HDC hdc) {
 }
 
-void MainWindow::OnPaint(HDC hdc){
-}
-
-void MainWindow::OnCommand(int id){
+void main_window::on_command(int id){
 	switch(id){
 		case ID_COLOR: 
 			break;
@@ -29,16 +27,14 @@ void MainWindow::OnCommand(int id){
 	}
 }
 
-void MainWindow::OnDestroy(){
+void main_window::on_destroy(){
 	::PostQuitMessage(0);
 }
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hp, LPSTR cmdLine, int nShow)
+int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int)
 {
-	Application app;
-	MainWindow wnd;	
-	wnd.Create(NULL, WS_OVERLAPPEDWINDOW | WS_VISIBLE, "NWP", 
-		(int)LoadMenu(hInstance, MAKEINTRESOURCE(IDM_MAIN)));	
-	return app.Run();
+	vsite::nwp::application app;
+	main_window wnd;
+	wnd.create(0, WS_OVERLAPPEDWINDOW | WS_VISIBLE, _T("NWP"), (int)LoadMenu(instance, MAKEINTRESOURCE(IDM_MAIN)));
+	return app.run();
 }
-
