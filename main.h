@@ -1,12 +1,10 @@
 #include "nwpwin.h"
 #include "nwpdlg.h"
 
-
-
 class main_window : public vsite::nwp::window {
 public:
 	const double pi = 3.14159265359;
-	int BrojKrugova = 8;
+	int BrojKrugova = 0;
 	COLORREF color = RGB(255, 255, 255);
 protected:
 	void on_paint(HDC hdc) override;

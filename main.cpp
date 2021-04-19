@@ -3,15 +3,6 @@
 #include "rc.h"
 #include <windows.h>
 
-class sel_obj {
-	HDC hdc;
-	HGDIOBJ hOld;
-public:
-	sel_obj(HDC hdc, HGDIOBJ hObj) :
-		hdc(hdc), hOld(SelectObject(hdc, hObj)) { }
-	~sel_obj() { SelectObject(hdc, hOld); }
-};
-
 int number_dialog::idd() const {
 	return IDD_NUMBER;
 }
@@ -31,7 +22,6 @@ bool number_dialog::on_ok() {
 	return true;
 }
 
-
 void main_window::on_paint(HDC hdc) {
 	POINT sredina;
 	RECT rect;
@@ -40,7 +30,6 @@ void main_window::on_paint(HDC hdc) {
 	sredina.y = rect.bottom / 2;
 	int radijus = 100;
 	HBRUSH h = CreateSolidBrush(this->color);
-	//sel_obj(hdc, h);
 	SelectObject(hdc, h);
 	SetROP2(hdc, R2_NOTXORPEN);
 	for (int i = 0; i < this->BrojKrugova; ++i) {
@@ -50,7 +39,6 @@ void main_window::on_paint(HDC hdc) {
 		Ellipse(hdc, centerX - radijus, centerY - radijus, centerX + radijus, centerY + radijus);
 	}
 	DeleteObject(SelectObject(hdc, h));
-	
 }
 
 void main_window::on_command(int id){
