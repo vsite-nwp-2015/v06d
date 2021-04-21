@@ -3,9 +3,8 @@
 
 class main_window : public vsite::nwp::window {
 public:
-	const double pi = 3.14159265359;
-	int BrojKrugova = 0;
-	COLORREF color = RGB(255, 255, 255);
+	int BrojKrugova = 6;
+	COLORREF color = RGB(0, 0, 0);
 protected:
 	void on_paint(HDC hdc) override;
 	void on_command(int id) override;
@@ -14,7 +13,7 @@ protected:
 
 class number_dialog : public vsite::nwp::dialog {
 public:
-	main_window* glavni = NULL;
+	int brojKrugovaDialog;
 protected:
 	int idd() const override;
 	bool on_init_dialog() override;

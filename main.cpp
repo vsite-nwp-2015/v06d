@@ -1,5 +1,6 @@
 #include "main.h"
-#include <cmath>
+#define _USE_MATH_DEFINES
+#include <math.h>
 #include "rc.h"
 #include <windows.h>
 
@@ -7,13 +8,12 @@ int number_dialog::idd() const {
 	return IDD_NUMBER;
 }
 bool number_dialog::on_init_dialog() {
+	dialog::set_int(IDC_EDIT1,this->brojKrugovaDialog);
 	return true;
 }
 bool number_dialog::on_ok() {
-	BOOL asd = true;
 	try {
-		this->glavni->BrojKrugova = dialog::get_int(IDC_EDIT1);
-		InvalidateRect(*(this->glavni), NULL, true);
+		this->brojKrugovaDialog = dialog::get_int(IDC_EDIT1);
 	}
 	catch (std::runtime_error) {
 		MessageBox(*this, _T("Unos mora biti broj"), 0, MB_OK);
@@ -30,20 +30,22 @@ void main_window::on_paint(HDC hdc) {
 	sredina.y = rect.bottom / 2;
 	int radijus = 100;
 	HBRUSH h = CreateSolidBrush(this->color);
+	HPEN p = CreatePen(PS_NULL, 0, RGB(0, 0, 0));
+	SelectObject(hdc, p);
 	SelectObject(hdc, h);
 	SetROP2(hdc, R2_NOTXORPEN);
 	for (int i = 0; i < this->BrojKrugova; ++i) {
-		double a = this->pi * 2 * i / BrojKrugova;
+		double a = M_PI * 2 * i / BrojKrugova;
 		int centerX = sredina.x + radijus * sin(a);
 		int centerY = sredina.y + radijus * cos(a);
 		Ellipse(hdc, centerX - radijus, centerY - radijus, centerX + radijus, centerY + radijus);
 	}
 	DeleteObject(SelectObject(hdc, h));
+	DeleteObject(SelectObject(hdc, p));
 }
 
 void main_window::on_command(int id){
 	number_dialog nd;
-	nd.glavni = this;
 	switch(id){
 		case ID_COLOR: {
 			CHOOSECOLOR ColorDialog;
@@ -60,8 +62,12 @@ void main_window::on_command(int id){
 			InvalidateRect(*this, NULL, true);
 			break;
 		}
-		case ID_NUMBER:
-			nd.do_modal(0, *this);
+		case ID_NUMBER: 
+			nd.brojKrugovaDialog = BrojKrugova;
+			if (nd.do_modal(0, *this) == IDOK) {
+				BrojKrugova = nd.brojKrugovaDialog;
+				InvalidateRect(*this, NULL, true);
+			}
 			break;
 		case ID_EXIT: 
 			DestroyWindow(*this); 
@@ -75,6 +81,7 @@ void main_window::on_destroy(){
 
 int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int)
 {
+	number_dialog nd;
 	vsite::nwp::application app;
 	main_window wnd;
 	wnd.create(0, WS_OVERLAPPEDWINDOW | WS_VISIBLE, _T("NWP"), (int)LoadMenu(instance, MAKEINTRESOURCE(IDM_MAIN)));
