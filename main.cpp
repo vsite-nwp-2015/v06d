@@ -33,8 +33,11 @@ void main_window::on_paint(HDC hdc) {
 	int radius = rect.bottom / 4;
 	
 	// https://math.stackexchange.com/a/206662
+	// polarne koordinate
 	for (int n = 0; n < k; ++n) {
 		double a = 2 * n * M_PI / k;
+
+		// pretvorba u kartezijev koordinatni
 		double x = radius * cos(a);
 		double y = radius * sin(a);
 		
