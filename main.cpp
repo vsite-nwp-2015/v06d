@@ -30,8 +30,8 @@ void main_window::on_paint(HDC hdc) {
 	sredina.y = rect.bottom / 2;
 	int radijus = rect.bottom/4;
 	HBRUSH h = CreateSolidBrush(this->color);
+	HGDIOBJ holdbrush = SelectObject(hdc, h);
 	SelectObject(hdc, GetStockObject(NULL_PEN));
-	SelectObject(hdc, h);
 	SetROP2(hdc, R2_NOTXORPEN);
 	for (int i = 0; i < this->BrojKrugova; ++i) {
 		double a = M_PI * 2 * i / BrojKrugova;
@@ -39,7 +39,8 @@ void main_window::on_paint(HDC hdc) {
 		int centerY = sredina.y + radijus * cos(a);
 		Ellipse(hdc, centerX - radijus, centerY - radijus, centerX + radijus, centerY + radijus);
 	}
-	DeleteObject(SelectObject(hdc, h));
+	SelectObject(hdc, holdbrush);
+	DeleteObject(h);
 }
 
 void main_window::on_command(int id){
