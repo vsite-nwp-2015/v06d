@@ -12,7 +12,13 @@ bool number_dialog::on_init_dialog() {
 	return true;
 }
 bool number_dialog::on_ok() {
-	broj = dialog::get_int(IDC_EDIT1);
+	try {
+		broj = dialog::get_int(IDC_EDIT1);
+	}
+	catch (std::runtime_error e) {
+		MessageBox(*this, _T("not a number"), _T("watcha doin"), MB_ICONWARNING | MB_OK);
+		return false;
+	}
 	return true;
 }
 
@@ -61,28 +67,28 @@ void main_window::new_color() {
 		set_color = cc.rgbResult;
 }
 
-int main_window::new_number() {
+void main_window::new_number() {
 
 	number_dialog nd(k);
 		if (nd.do_modal(0, *this) == IDOK) {
 			k = nd.get_int();
-		return k;
 	}
 }
 
 void main_window::on_command(int id){
 	switch(id){
 		case ID_COLOR: 
-			new_color();	
+			new_color();
+			InvalidateRect(*this, NULL, TRUE);
 			break;
 		case ID_NUMBER: 
 			new_number();
+			InvalidateRect(*this, NULL, TRUE);
 			break;
 		case ID_EXIT: 
 			DestroyWindow(*this); 
 			break;
 	}
-	InvalidateRect(*this, NULL, TRUE);
 }
 
 void main_window::on_destroy(){
