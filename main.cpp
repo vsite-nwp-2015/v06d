@@ -15,7 +15,7 @@ bool number_dialog::on_ok() {
 	try {
 		broj = dialog::get_int(IDC_EDIT1);
 	}
-	catch (std::runtime_error e) {
+	catch (std::runtime_error) {
 		MessageBox(*this, _T("not a number"), _T("watcha doin"), MB_ICONWARNING | MB_OK);
 		return false;
 	}
@@ -36,7 +36,7 @@ void main_window::on_paint(HDC hdc) {
 	SetViewportOrgEx(hdc, rect.right / 2 , rect.bottom / 2, NULL);
 	SetROP2(hdc, R2_NOTXORPEN);
 	
-	int radius = rect.bottom / 4;
+	int D = rect.bottom / 4;
 	
 	// https://math.stackexchange.com/a/206662
 	// polarne koordinate
@@ -44,11 +44,11 @@ void main_window::on_paint(HDC hdc) {
 		double a = 2 * n * M_PI / k;
 
 		// pretvorba u kartezijev koordinatni
-		double x = radius * cos(a);
-		double y = radius * sin(a);
+		int x = (int) (D * cos(a)); // ::Ellipse prima int-ove
+		int y = (int) (D * sin(a));
 		
 		// left top right bottom
-		::Ellipse(hdc, x + radius, y + radius, x - radius, y - radius);
+		::Ellipse(hdc, x + D, y + D, x - D, y - D);
 	}
 	DeleteObject(SelectObject(hdc, holdBrush));
 }
